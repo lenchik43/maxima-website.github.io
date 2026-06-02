@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maxima Dance Club</title>
+    <title>Maxima Спортивные бальные танцы</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -134,8 +135,15 @@
             position: absolute;
             right: 0; top: 0;
             width: 55%; height: 100%;
-            background: linear-gradient(135deg, rgba(13, 33, 55, 0.9) 0%, rgba(10, 22, 40, 0.3) 100%);
+            background: url('https://psv4.userapi.com/s/v1/d2/dXjbgbJkwnUjC42UThgLu0RICr_ODV1_13BGw1ZdcUMKH3a8viNmV47nS0Y-WNjVHs3MSAY5v0GeL40mKhERIPxb1ajPedkYpKddC5VrS-NNRpZVR26bxhgavEzGd-wcrqhQV8wGNzZA/slide2.jpg') center/cover no-repeat;
             clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+        }
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(13, 33, 55, 0.85) 0%, rgba(10, 22, 40, 0.35) 100%);
         }
         .hero-content {
             position: relative; z-index: 10;
@@ -188,35 +196,6 @@
             background: var(--white);
             color: var(--deep-blue);
             clip-path: polygon(0% 0, 100% 0, 100% 100%, 0% 100%);
-        }
-
-        /* ============ INFO BLOCKS (для будущего) ============ */
-        .info-blocks {
-            padding: 5rem 0;
-        }
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2.5rem;
-        }
-        .info-card {
-            padding: 2rem;
-            border: 1px solid rgba(184, 212, 232, 0.12);
-            transition: 0.3s;
-        }
-        .info-card:hover {
-            border-color: var(--ice-blue);
-            background: rgba(255, 255, 255, 0.02);
-        }
-        .info-card h3 {
-            font-size: 1.3rem;
-            color: var(--white);
-            margin-bottom: 0.8rem;
-        }
-        .info-card p {
-            color: var(--muted-blue);
-            font-size: 0.9rem;
         }
 
         /* ============ SCHEDULE ============ */
@@ -576,7 +555,6 @@
         .admin-field select:focus { border-color: var(--ice-blue); }
         .admin-field select option { background: var(--navy); color: var(--white); }
 
-        /* Строка добавления дня */
         .schedule-day-row {
             display: grid;
             grid-template-columns: 1fr 1.5fr 1.5fr 1fr 0.5fr;
@@ -640,7 +618,7 @@
         @media (max-width: 768px) {
             .hero-content { padding: 0 1rem; }
             .hero-title { font-size: 2.5rem; }
-            .hero-bg { width: 100%; opacity: 0.5; }
+            .hero-bg { width: 100%; opacity: 0.6; }
             .burger { display: flex; }
             nav {
                 position: fixed;
@@ -689,7 +667,7 @@
     <section class="hero" id="home">
         <div class="hero-bg"></div>
         <div class="hero-content">
-            <p class="hero-sub">Maxima Dance Club</p>
+            <p class="hero-sub"></p>
             <h1 class="hero-title">Движение <br><em>к совершенству</em></h1>
             <p class="hero-desc" id="heroDescText">#</p>
             <a href="#contacts" class="btn">Связаться с нами</a>
@@ -769,7 +747,7 @@
         <input type="password" id="adminPasswordInput" placeholder="••••••" onkeydown="if(event.key==='Enter')checkAdminPassword()">
         <div class="login-error" id="loginError">Неверный пароль</div>
         <button class="btn-submit" onclick="checkAdminPassword()">Войти</button>
-        <p style="margin-top:0.8rem;font-size:0.65rem;color:var(--muted-blue);"> <code style="color:var(--ice-blue);"></code></p>
+        <p style="margin-top:0.8rem;font-size:0.65rem;color:var(--muted-blue);"><code style="color:var(--ice-blue);"></code></p>
     </div>
 </div>
 
@@ -785,6 +763,14 @@
             <label>Текст под заголовком</label>
             <textarea id="adminHeroDesc" rows="2"></textarea>
         </div>
+        <div class="admin-field">
+            <label>Ссылка на фото Hero</label>
+            <input type="text" id="adminHeroImage" placeholder="URL картинки">
+        </div>
+        <div class="admin-field">
+            <label>Или загрузить фото с ПК</label>
+            <input type="file" id="adminHeroUpload" accept="image/*" onchange="uploadHeroImage(event)">
+        </div>
     </div>
 
     <!-- КОНТАКТЫ -->
@@ -796,9 +782,9 @@
         <div class="admin-field"><label>Часы работы</label><input type="text" id="adminHours"></div>
     </div>
 
-    <!-- РАСПИСАНИЕ (КОНСТРУКТОР) -->
+    <!-- РАСПИСАНИЕ -->
     <div class="admin-section">
-        <h4>Расписание</h4>
+        <h4>Расписание — конструктор</h4>
         <div class="admin-field">
             <label>1. Выберите школу и группу</label>
             <select id="adminSelectSchool" onchange="updateAdminGroupSelect()">
@@ -808,7 +794,7 @@
                 <option value="">Группа</option>
             </select>
         </div>
-        <div class="admin-field" id="scheduleConstructor">
+        <div class="admin-field">
             <label>2. Дни занятий</label>
             <div id="scheduleDaysList"></div>
             <button class="admin-btn add" onclick="addDayRow()">+ Добавить день</button>
@@ -846,9 +832,7 @@
 <script>
     const ADMIN_PASSWORD = 'maxima2026';
     let adminLoggedIn = false;
-    let tempDays = []; // временный массив дней в конструкторе
-
-    const DAYS = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'ВС'];
+    let tempDays = [];
 
     const defaultFullSchedule = {
         "Школа №54": { "Старшая группа": [], "Юниоры": [], "Дети": [], "Взрослые": [] },
@@ -858,6 +842,7 @@
 
     const defaultData = {
         heroDesc: "#",
+        heroImage: "https://psv4.userapi.com/s/v1/d2/dXjbgbJkwnUjC42UThgLu0RICr_ODV1_13BGw1ZdcUMKH3a8viNmV47nS0Y-WNjVHs3MSAY5v0GeL40mKhERIPxb1ajPedkYpKddC5VrS-NNRpZVR26bxhgavEzGd-wcrqhQV8wGNzZA/slide2.jpg",
         phone: "#",
         email: "#",
         address: "#",
@@ -874,12 +859,13 @@
     };
 
     function loadData() {
-        const saved = localStorage.getItem('maximaSiteDataV2');
+        const saved = localStorage.getItem('maximaSiteDataV3');
         if (saved) {
             try {
                 const parsed = JSON.parse(saved);
                 return {
                     heroDesc: parsed.heroDesc || "#",
+                    heroImage: parsed.heroImage || defaultData.heroImage,
                     phone: parsed.phone || "#",
                     email: parsed.email || "#",
                     address: parsed.address || "#",
@@ -899,15 +885,23 @@
     let selectedSchool = null;
     let selectedGroup = null;
 
-    // ============ ОТРИСОВКА САЙТА ============
+    // ============ ОТРИСОВКА ============
     function renderAll() {
         document.getElementById('heroDescText').textContent = siteData.heroDesc;
         document.getElementById('navPhone').textContent = siteData.phone;
         document.getElementById('navPhone').href = 'tel:' + siteData.phone.replace(/[^+\d]/g, '');
+        updateHeroBackground();
         renderContacts();
         buildFilters();
         renderCoaches();
         renderGallery();
+    }
+
+    function updateHeroBackground() {
+        const heroBg = document.querySelector('.hero-bg');
+        if (heroBg && siteData.heroImage) {
+            heroBg.style.backgroundImage = 'url(' + siteData.heroImage + ')';
+        }
     }
 
     function renderContacts() {
@@ -924,7 +918,6 @@
         const groupRow = document.getElementById('groupRow');
         schoolRow.querySelectorAll('.filter-tab').forEach(el => el.remove());
         groupRow.querySelectorAll('.filter-tab').forEach(el => el.remove());
-
         Object.keys(siteData.fullSchedule).sort().forEach(school => {
             const tab = document.createElement('button');
             tab.className = 'filter-tab';
@@ -1009,7 +1002,7 @@
     function toggleMenu() { document.getElementById('nav').classList.toggle('active'); document.getElementById('burger').classList.toggle('active'); }
     function closeMenu() { document.getElementById('nav').classList.remove('active'); document.getElementById('burger').classList.remove('active'); }
 
-    // ============ АДМИН-ЛОГИН ============
+    // ============ АДМИН ============
     function openAdminLogin() {
         if (adminLoggedIn) {
             document.getElementById('adminPanel').classList.toggle('active');
@@ -1032,6 +1025,7 @@
 
     function fillAdminPanel() {
         document.getElementById('adminHeroDesc').value = siteData.heroDesc;
+        document.getElementById('adminHeroImage').value = siteData.heroImage || '';
         document.getElementById('adminPhone').value = siteData.phone;
         document.getElementById('adminEmail').value = siteData.email;
         document.getElementById('adminAddress').value = siteData.address;
@@ -1043,6 +1037,16 @@
         renderConstructorDays();
     }
 
+    function uploadHeroImage(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('adminHeroImage').value = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
     // ============ КОНСТРУКТОР РАСПИСАНИЯ ============
     function updateAdminSelects() {
         const schoolSelect = document.getElementById('adminSelectSchool');
@@ -1051,8 +1055,6 @@
             schoolSelect.innerHTML += '<option value="' + s + '">' + s + '</option>';
         });
         document.getElementById('adminSelectGroup').innerHTML = '<option value="">Группа</option>';
-        tempDays = [];
-        renderConstructorDays();
     }
 
     function updateAdminGroupSelect() {
@@ -1087,7 +1089,11 @@
         }
         list.innerHTML = tempDays.map((d, i) =>
             '<div class="schedule-day-row">' +
-                '<select onchange="tempDays[' + i + '].day=this.value"><option' + (d.day==='ПН'?' selected':'') + '>ПН</option><option' + (d.day==='ВТ'?' selected':'') + '>ВТ</option><option' + (d.day==='СР'?' selected':'') + '>СР</option><option' + (d.day==='ЧТ'?' selected':'') + '>ЧТ</option><option' + (d.day==='ПТ'?' selected':'') + '>ПТ</option><option' + (d.day==='СБ'?' selected':'') + '>СБ</option><option' + (d.day==='ВС'?' selected':'') + '>ВС</option></select>' +
+                '<select onchange="tempDays[' + i + '].day=this.value">' +
+                    ['ПН','ВТ','СР','ЧТ','ПТ','СБ','ВС'].map(day => 
+                        '<option' + (d.day === day ? ' selected' : '') + '>' + day + '</option>'
+                    ).join('') +
+                '</select>' +
                 '<input type="text" value="' + d.time + '" placeholder="Время" onchange="tempDays[' + i + '].time=this.value">' +
                 '<input type="text" value="' + d.type + '" placeholder="Занятие" onchange="tempDays[' + i + '].type=this.value">' +
                 '<input type="text" value="' + d.hall + '" placeholder="Зал" onchange="tempDays[' + i + '].hall=this.value">' +
@@ -1112,7 +1118,7 @@
         if (!school || !group) { alert('Выберите школу и группу!'); return; }
         if (!siteData.fullSchedule[school]) siteData.fullSchedule[school] = {};
         siteData.fullSchedule[school][group] = JSON.parse(JSON.stringify(tempDays));
-        alert('Группа «' + group + '» сохранена! Нажмите «Сохранить всё» чтобы применить на сайте.');
+        alert('Группа «' + group + '» сохранена! Нажмите «Сохранить всё» чтобы применить.');
     }
 
     // ============ ФОТО ============
@@ -1137,6 +1143,7 @@
         if (!adminLoggedIn) return;
         try {
             siteData.heroDesc = document.getElementById('adminHeroDesc').value || "#";
+            siteData.heroImage = document.getElementById('adminHeroImage').value || defaultData.heroImage;
             siteData.phone = document.getElementById('adminPhone').value || "#";
             siteData.email = document.getElementById('adminEmail').value || "#";
             siteData.address = document.getElementById('adminAddress').value || "#";
@@ -1147,11 +1154,13 @@
             });
             siteData.gallery = document.getElementById('adminGallery').value.split('\n').filter(l => l.trim());
 
-            localStorage.setItem('maximaSiteDataV2', JSON.stringify(siteData));
+            localStorage.setItem('maximaSiteDataV3', JSON.stringify(siteData));
             galleryImages = siteData.gallery;
             renderAll();
             updateAdminSelects();
             document.getElementById('scheduleBody').innerHTML = '<tr><td colspan="4" class="no-schedule">Выберите школу и группу</td></tr>';
+            selectedSchool = null;
+            selectedGroup = null;
             alert('Сохранено!');
         } catch(e) {
             alert('Ошибка: ' + e.message);
@@ -1162,7 +1171,7 @@
         if (!adminLoggedIn) return;
         if (confirm('Сбросить всё на решётки?')) {
             siteData = JSON.parse(JSON.stringify(defaultData));
-            localStorage.setItem('maximaSiteDataV2', JSON.stringify(siteData));
+            localStorage.setItem('maximaSiteDataV3', JSON.stringify(siteData));
             galleryImages = [];
             selectedSchool = null;
             selectedGroup = null;
@@ -1202,20 +1211,19 @@
     });
 
     // ============ ПАРАЛЛАКС ============
-    const heroBg = document.querySelector('.hero-bg');
-    if (heroBg) {
+    const heroBgEl = document.querySelector('.hero-bg');
+    if (heroBgEl) {
         window.addEventListener('mousemove', function(e) {
             const x = (window.innerWidth / 2 - e.clientX) / 80;
             const y = (window.innerHeight / 2 - e.clientY) / 80;
-            heroBg.style.transform = 'translateX(' + x + 'px) translateY(' + y + 'px)';
+            heroBgEl.style.transform = 'translateX(' + x + 'px) translateY(' + y + 'px)';
         });
     }
 
     // ============ СТАРТ ============
     renderAll();
     document.getElementById('scheduleBody').innerHTML = '<tr><td colspan="4" class="no-schedule">Выберите школу и группу</td></tr>';
-
-    console.log('Maxima Dance Club | Ctrl+~ админ-панель');
+    console.log('🕺 Maxima Dance Club | Ctrl+~ админ-панель');
 </script>
 
 </body>
